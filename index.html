@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuentos Escolares - Colegio Milagros de Dios</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Iconos Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        /* Estilos Generales y Personalizados */
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f9ff; /* Color de fondo base */
+            padding-top: 64px;
+            color: #1f2937;
+        }
+
+        /* --- FONDO ANIMADO MEJORADO --- */
+        #animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+            background: linear-gradient(135deg, #f0f9ff, #f0fdf4, #fefce8); /* Tonos suaves del logo */
+        }
+        .bg-particle {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(59, 130, 246, 0.3); /* Tono azul del logo */
+            animation: floatUp 25s infinite linear;
+            bottom: -50px;
+        }
+        @keyframes floatUp {
+            to { transform: translateY(-110vh); opacity: 0; }
+        }
+        #animated-bg svg {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: auto;
+            opacity: 0.1;
+            animation: pulseGlow 8s infinite ease-in-out;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.2)); }
+            50% { filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.5)); }
+        }
+
+        /* --- MENÚ DE NAVEGACIÓN MEJORADO (NUEVOS COLORES) --- */
+        nav {
+            background-color: rgba(17, 24, 39, 0.8); /* Fondo oscuro translúcido */
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(55, 65, 81, 0.5);
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+            color: #d1d5db; /* Texto gris claro para contraste */
+        }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            bottom: -4px; left: 50%;
+            background-color: #f59e0b; /* Amarillo del logo para el efecto hover */
+            transition: all 0.3s ease-in-out;
+        }
+        .nav-link:hover::after { width: 100%; left: 0; }
+        .nav-link:hover { color: #ffffff; } /* Texto blanco al pasar el ratón */
+
+        /* --- ENCABEZADO CON NUEVOS COLORES --- */
+        @keyframes gradient-animation { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .hero-bg {
+            background: linear-gradient(135deg, #2563eb, #10b981); /* Gradiente azul y verde del logo */
+            background-size: 200% 200%;
+            animation: gradient-animation 15s ease infinite;
+        }
+        
+        /* --- OTROS ESTILOS --- */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .story-card, .podium-item { animation: fadeIn 0.6s ease-out forwards; }
+        .category-btn.active {
+            background-color: #2563eb; color: white; transform: scale(1.05); /* Azul del logo */
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+        }
+        .category-btn, .story-card { transition: all 0.3s ease-in-out; }
+        .story-card:hover { transform: translateY(-8px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        @keyframes heartBeat { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+        .like-btn.liked i { animation: heartBeat 0.5s ease-in-out; }
+        #story-modal.hidden { display: none; }
+        .text-shadow-md { text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div id="animated-bg">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(59, 130, 246, 0.5)"><path d="M12 2a10 10 0 0 0-7.53 16.59l-.04.05A10 10 0 0 0 12 22a10 10 0 0 0 7.57-16.54l-.04-.05A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-5.65-2.34l.03-.03.03-.03A8 8 0 0 1 12 4a8 8 0 0 1 5.66 13.66l.03.03.03.03A8 8 0 0 1 12 20zm0-14a6 6 0 0 0-4.24 10.24l.03.03.03.03A6 6 0 0 0 12 18a6 6 0 0 0 4.24-1.76l.03-.03.03-.03A6 6 0 0 0 12 6zm-2.83 8.41a4 4 0 0 1 0-5.66l-.03-.03A4 4 0 0 1 12 8a4 4 0 0 1 2.83 6.83l-.03.03a4 4 0 0 1-5.66 0z"/></svg>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const bgContainer = document.getElementById('animated-bg');
+            const particleCount = 70;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('span');
+                particle.className = 'bg-particle';
+                particle.textContent = Math.random() < 0.5 ? '0' : '1';
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.animationDuration = `${Math.random() * 15 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particle.style.fontSize = `${Math.random() * 10 + 10}px`;
+                bgContainer.appendChild(particle);
+            }
+        });
+    </script>
+
+    <!-- Menú de Navegación Mejorado -->
+    <nav class="fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between h-16">
+                <a href="#" class="flex items-center gap-3 text-xl font-bold">
+                    <img src="https://colegiomilagrosdedios.edu.pe/wp-content/uploads/2023/08/Asset-1@360px.png" alt="Logo" class="h-8 w-auto">
+                </a>
+                <div class="flex items-center gap-8 font-semibold">
+                    <a href="#inicio" class="nav-link">Inicio</a>
+                    <a href="#ranking" class="nav-link">Ranking</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido de la página (sin cambios estructurales) -->
+    <header id="inicio" class="hero-bg text-white shadow-lg pt-12">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight">Mundo de Cuentos</h1>
+            <p class="mt-4 text-lg md:text-xl font-light">Un proyecto de los alumnos del Colegio "Milagros de Dios"</p>
+            <p class="text-sm mt-2 opacity-80">San Martín de Porres, Lima, Perú</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="ranking" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-10 text-gray-700">🏆 Ranking de Cuentos</h2>
+            <div id="ranking-container" class="flex justify-center items-end gap-6 md:gap-0 flex-wrap"></div>
+        </section>
+
+        <!-- Sección de Búsqueda y Categorías -->
+        <section id="stories-section" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-700">Explora los Cuentos</h2>
+            
+            <!-- Barra de Búsqueda -->
+            <div class="max-w-2xl mx-auto mb-8">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="ph ph-magnifying-glass text-gray-400"></i>
+                    </span>
+                    <input type="search" id="search-input" placeholder="Buscar por título o autor..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <!-- Botones de Categorías -->
+            <div id="category-buttons" class="flex flex-wrap justify-center gap-3 md:gap-4"></div>
+        </section>
+
+        <section id="stories-gallery">
+            <div id="stories-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"></div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-6 text-center text-sm">
+            <p>&copy; 2025 Colegio Milagros de Dios. Todos los derechos reservados.</p>
+            <p class="mt-1 opacity-70">Fomentando la creatividad y la lectura.</p>
+        </div>
+    </footer>
+
+    <div id="story-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-4xl h-[90vh] flex flex-col animate-fadeIn">
+            <header class="flex items-center justify-between p-4 border-b">
+                <h3 id="modal-title" class="text-xl font-bold text-gray-800"></h3>
+                <button id="modal-close-btn" class="text-gray-500 hover:text-gray-900"><i class="ph-bold ph-x text-2xl"></i></button>
+            </header>
+            <div class="flex-grow p-1">
+                <iframe id="modal-iframe" class="w-full h-full border-0" src="" title="Contenido del cuento"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script principal de Firebase y Lógica de la App -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, onSnapshot, collection, increment, writeBatch, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDGRYkWqRo9RhOAs0UCxAbbuwIDb6yGXQw",
+            authDomain: "mundo-de-cuentos-dddd4.firebaseapp.com",
+            projectId: "mundo-de-cuentos-dddd4",
+            storageBucket: "mundo-de-cuentos-dddd4.firebasestorage.app",
+            messagingSenderId: "198504390565",
+            appId: "1:198504390565:web:8a1f360c817e110abcd24c"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        let currentUser = null;
+        let userVotes = new Set();
+        let allStoriesMaster = [];
+        
+        const storiesDetails = [
+            { id: 1, title: "Thony y el gran reto de Pedro", author: "Leonardo T.", category: "educativo", link: "https://g.co/gemini/share/e198ae3bcd06", cover: "images/p5.1.png" },
+            { id: 2, title: "Mateo y el Mapa Estelar", author: "Renato S.", category: "educativo", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/p5.2.png" },
+            { id: 3, title: "El Tesoro del Pirata Intrépido", author: "Alondra O.", category: "educativo", link: "https://storybook.google.com/", cover: "images/portada-renato.png" },
+            { id: 4, title: "El Legado de Draco", author: "Thiago C.", category: "fantastico", link: "https://g.co/gemini/share/09b9979e5156", cover: "images/p6.1.png" },
+            { id: 5, title: "El Velo de la Discordia", author: "Gabriela M.", category: "fantastico", link: "https://g.co/gemini/share/465e1d2f3bbb", cover: "images/p6.2.png" },
+            { id: 6, title: "La Odisea Cúbica del Multiverso", author: "Paul M.", category: "fantastico", link: "https://g.co/gemini/share/51e841b38a23", cover: "images/p6.3.png" },
+            { id: 7, title: "La Espada del Hielo Estelar de Floppa", author: "Fabricio N.", category: "fantastico", link: "https://g.co/gemini/share/2b5579bf3d68", cover: "images/p6.4.png" },
+            { id: 8, title: "El Rescate de las Seis Luces", author: "Victor O.", category: "fantastico", link: "https://g.co/gemini/share/df73c8c6f936", cover: "images/p6.5.png" },
+            { id: 9, title: "La Flor de Ígnea y los Universos Ocultos", author: "Tatiana S.", category: "fantastico", link: "https://g.co/gemini/share/59b87ffdf0ca", cover: "images/p6.6.png" },
+            { id: 10, title: "La Expedición al Volcán Dormido", author: "Joaquín Soto", category: "fantastico", link: "https://g.co/gemini/share/51e841b38a23", cover: "" },
+            { id: 11, title: "El Robot con Corazón", author: "Renata Díaz", category: "fantastico", link: "https://g.co/gemini/share/51e841b38a23", cover: "" },
+            { id: 12, title: "El Caso del Ladrón de Mascotas", author: "Emilio Ramos", category: "fantastico", link: "https://g.co/gemini/share/51e841b38a23", cover: "" },
+            { id: 13, title: "El Misterio del Jardín Secreto", author: "Leonardo", category: "fantastico", link: "https://g.co/gemini/share/e198ae3bcd06", cover: "" },
+            { id: 14, title: "El Viajero Interdimensional", author: "Renato", category: "fantastico", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 15, title: "El Viajero Interdimensional", author: "Renato", category: "fantastico", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 16, title: "El Viajero Interdimensional", author: "Renato", category: "fantastico", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 17, title: "El Viajero Interdimensional", author: "Renato", category: "fantastico", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 18, title: "La Perla de Fuego", author: "Mía M.", category: "aventura", link: "https://g.co/gemini/share/3c62352c00eb", cover: "images/s1.1.png" },
+            { id: 19, title: "La Nebulosa del Destino", author: "Mateo S.", category: "aventura", link: "https://g.co/gemini/share/76ecfecbd0e5", cover: "images/s1.2.png" },
+            { id: 20, title: "La Selva Perdida", author: "Abigail T.", category: "aventura", link: "https://g.co/gemini/share/4587ae74ef1c", cover: "images/s1.3.png" },
+            { id: 21, title: "El Enigma del Reloj Desaparecido", author: "Valentina Gómez", category: "aventura", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "https://placehold.co/400x600/78716c/ffffff?text=El+Enigma\\ndel+Reloj" },
+            { id: 22, title: "Aprendiendo con los Animales", author: "Carlos Mendoza", category: "aventura", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "https://placehold.co/400x600/22c55e/ffffff?text=Aprendiendo\\ncon\\nAnimales" },
+            { id: 23, title: "El Dragón y la Princesa Valiente", author: "Isabella Castillo", category: "aventura", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "https://placehold.co/400x600/ec4899/ffffff?text=El+Dragón\\ny+la\\nPrincesa" },
+            { id: 24, title: "La Expedición al Volcán Dormido", author: "Joaquín Soto", category: "aventura", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "https://placehold.co/400x600/ef4444/ffffff?text=Expedición\\nal+Volcán" },
+            { id: 25, title: "El Robot con Corazón", author: "Renata Díaz", category: "aventura", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "https://placehold.co/400x600/3b82f6/ffffff?text=El+Robot\\ncon\\nCorazón" },
+            { id: 26, title: "El Caso del Ladrón de Mascotas", author: "Emilio Ramos", category: "aventura", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "https://placehold.co/400x600/f43f5e/ffffff?text=El+Caso\\ndel+Ladrón" },
+            { id: 27, title: "El Misterio del Jardín Secreto", author: "Leonardo", category: "aventura", link: "https://g.co/gemini/share/e198ae3bcd06", cover: "https://placehold.co/400x600/22c55e/ffffff?text=El+Misterio\\ndel+Jardín\\nSecreto" },
+            { id: 28, title: "El Viajero Interdimensional", author: "Renato", category: "aventura", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 29, title: "El Viajero Interdimensional", author: "Renato", category: "aventura", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 30, title: "El Viajero Interdimensional", author: "Renato", category: "aventura", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 31, title: "El Viajero Interdimensional", author: "Renato", category: "aventura", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 32, title: "El Secreto de Pepe", author: "Estefano R.", category: "caballeria", link: "https://g.co/gemini/share/71de8899fb2b", cover: "images/s2.1.png" },
+            { id: 33, title: "El Viajero Interdimensional", author: "Renato", category: "caballeria", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 34, title: "El Viajero Interdimensional", author: "Renato", category: "caballeria", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 35, title: "El Viajero Interdimensional", author: "Renato", category: "caballeria", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 36, title: "El Viajero Interdimensional", author: "Renato", category: "caballeria", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 37, title: "El Viajero Interdimensional", author: "Renato", category: "caballeria", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 38, title: "La Neblina del Vidente", author: "Aylin H.", category: "terror", link: "https://g.co/gemini/share/2c314f2a0033", cover: "images/s3.1.png" },
+            { id: 39, title: "Los Secretos del Internado", author: "Adrian R.", category: "terror", link: "https://g.co/gemini/share/0931b7328562", cover: "images/s3.2.png" },
+            { id: 40, title: "El Viajero Interdimensional", author: "Renato", category: "terror", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 41, title: "El Viajero Interdimensional", author: "Renato", category: "terror", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 42, title: "El Viajero Interdimensional", author: "Renato", category: "terror", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 43, title: "El Viajero Interdimensional", author: "Renato", category: "terror", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 44, title: "El Viajero Interdimensional", author: "Renato", category: "terror", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 45, title: "El Viajero Interdimensional", author: "Renato", category: "terror", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 46, title: "El Viajero Interdimensional", author: "Renato", category: "terror", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 47, title: "El Viajero Interdimensional", author: "Renato", category: "terror", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 48, title: "El Cristal de Astra", author: "Katherine C.", category: "ciencia_ficcion", link: "https://g.co/gemini/share/c3557f0f0185", cover: "images/s4.1.png" },
+            { id: 49, title: "Los Archivos Secretos de AquaCorp", author: "Adrian V.", category: "ciencia_ficcion", link: "https://g.co/gemini/share/3942287dbf02", cover: "images/s4.2.png" },
+            { id: 50, title: "El Viajero Interdimensional", author: "Renato", category: "ciencia_ficcion", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 51, title: "El Viajero Interdimensional", author: "Renato", category: "ciencia_ficcion", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 52, title: "El Viajero Interdimensional", author: "Renato", category: "ciencia_ficcion", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 53, title: "El Viajero Interdimensional", author: "Renato", category: "ciencia_ficcion", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 54, title: "El Viajero Interdimensional", author: "Renato", category: "ciencia_ficcion", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 55, title: "El Viajero Interdimensional", author: "Renato", category: "ciencia_ficcion", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 56, title: "El Viajero Interdimensional", author: "Renato", category: "ciencia_ficcion", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 57, title: "La Rosa Final", author: "Adriano C.", category: "policial", link: "https://g.co/gemini/share/feca32cf8fac", cover: "images/s5.1.png" },
+            { id: 58, title: "El Camino del Dragón Silencioso", author: "Joao C.", category: "policial", link: "https://g.co/gemini/share/43a93940a3aa", cover: "images/s5.2.png" },
+            { id: 59, title: "El misterio de la galería Luz y Sombra", author: "Eidy G.", category: "policial", link: "https://g.co/gemini/share/5fd9478bce56", cover: "images/s5.3.png" },
+            { id: 60, title: "Conexión Letal", author: "Adriano M.", category: "policial", link: "https://g.co/gemini/share/155f9aa3216c", cover: "images/s5.4.png" },
+            { id: 61, title: "El destello Asesino", author: "Xiana R.", category: "policial", link: "https://g.co/gemini/share/20930db82c27", cover: "images/s5.5.png" },
+            { id: 62, title: "El Legado de la Neblina", author: "José S.", category: "policial", link: "https://g.co/gemini/share/a3fa49dd7cee", cover: "images/s5.6.png" },
+            { id: 63, title: "SOMBRAS EN LA ESTACIÓN", author: "Leandro S.", category: "policial", link: "https://g.co/gemini/share/9cd783e22547", cover: "images/s5.7.png" },
+            { id: 64, title: "El Viajero Interdimensional", author: "Renato", category: "policial", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" },
+            { id: 65, title: "El Viajero Interdimensional", author: "Renato", category: "policial", link: "https://g.co/gemini/share/2db44f1dc5e3", cover: "images/portada-renato.png" }
+        ];
+
+        const categories = {
+            educativo: { name: "Educativos", icon: "graduation-cap" },
+            fantastico: { name: "Fantásticos", icon: "sparkle" },
+            aventura: { name: "Aventura", icon: "compass" },
+            caballeria: { name: "Caballería", icon: "shield-check" },
+            terror: { name: "Terror", icon: "ghost" },
+            ciencia_ficcion: { name: "Ciencia Ficción", icon: "rocket-launch" },
+            policial: { name: "Policial", icon: "detective" },
+        };
+        
+        const categoryButtonsContainer = document.getElementById('category-buttons');
+        const storiesContainer = document.getElementById('stories-container');
+        const rankingContainer = document.getElementById('ranking-container');
+        const storyModal = document.getElementById('story-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalIframe = document.getElementById('modal-iframe');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const searchInput = document.getElementById('search-input');
+        let currentCategory = Object.keys(categories)[0]; // Default to the first category
+        let searchTerm = '';
+        
+
+        async function initializeStoriesInFirestore() {
+            const storiesRef = collection(db, "stories");
+            const snapshot = await getDocs(storiesRef);
+            if (snapshot.docs.length < storiesDetails.length) {
+                const batch = writeBatch(db);
+                storiesDetails.forEach(story => {
+                    const docRef = doc(db, "stories", String(story.id));
+                    if (!snapshot.docs.find(d => d.id === String(story.id))) {
+                       batch.set(docRef, { likes: 0 });
+                    }
+                });
+                await batch.commit();
+            }
+        }
+        
+        function setupRealtimeListeners() {
+            const storiesCol = collection(db, "stories");
+            onSnapshot(storiesCol, (snapshot) => {
+                const storiesData = [];
+                snapshot.forEach(doc => {
+                    storiesData.push({ id: parseInt(doc.id), ...doc.data() });
+                });
+                allStoriesMaster = storiesDetails.map(detail => {
+                    const firestoreData = storiesData.find(s => s.id === detail.id);
+                    return { ...detail, likes: firestoreData ? firestoreData.likes : 0 };
+                });
+                displayAllUI(allStoriesMaster);
+            });
+        }
+        
+        function displayAllUI(allStories) {
+            displayStories(allStories);
+            displayTopStories(allStories);
+        }
+
+        function displayTopStories(allStories) {
+            rankingContainer.innerHTML = '';
+            const sortedStories = [...allStories].sort((a, b) => b.likes - a.likes);
+            const topStories = sortedStories.slice(0, 3);
+            if (topStories.length === 0 || (topStories[0] && topStories[0].likes === 0)) {
+                rankingContainer.innerHTML = `<p class="w-full text-center text-gray-500 text-lg">¡Sé el primero en votar para construir el podio!</p>`;
+                return;
+            }
+            const podiumStyles = [
+                { order: 'order-1 md:order-2', height: 'h-64 md:h-80', bg: 'bg-gradient-to-b from-amber-400 to-yellow-500', textColor: 'text-amber-800', crown: '<i class="ph-fill ph-crown text-4xl text-yellow-400 absolute -top-5 left-1/2 -translate-x-1/2"></i>' },
+                { order: 'order-2 md:order-1', height: 'h-56 md:h-72', bg: 'bg-gradient-to-b from-blue-400 to-blue-600', textColor: 'text-blue-800', crown: '' },
+                { order: 'order-3 md:order-3', height: 'h-48 md:h-64', bg: 'bg-gradient-to-b from-emerald-400 to-green-600', textColor: 'text-emerald-800', crown: '' }
+            ];
+            let podiumHTML = '';
+            topStories.forEach((story, index) => {
+                const style = podiumStyles[index];
+                podiumHTML += `
+                    <div class="podium-item ${style.order} w-full sm:w-1/2 md:w-1/4 flex flex-col items-center">
+                        <div class="w-full ${style.height} ${style.bg} rounded-t-xl shadow-2xl p-4 flex flex-col justify-end items-center text-center relative">
+                            ${style.crown}
+                            <img src="${story.cover}" alt="${story.title}" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg mb-2">
+                            <h3 class="font-bold text-white text-shadow-md text-lg truncate w-full px-1">${story.title}</h3>
+                            <p class="text-sm text-gray-100 text-shadow-md">${story.author}</p>
+                            <div class="mt-2 flex items-center justify-center gap-1 text-lg font-bold text-white bg-black/20 px-3 py-1 rounded-full"><i class="ph-fill ph-heart"></i><span>${story.likes}</span></div>
+                        </div><div class="font-bold text-5xl ${style.textColor} mt-2">${index + 1}</div></div>`;
+            });
+            if (topStories.length < 3) {
+                for (let i = topStories.length; i < 3; i++) {
+                     const style = podiumStyles[i];
+                     podiumHTML += `
+                        <div class="podium-item ${style.order} w-full sm:w-1/2 md:w-1/4 flex-col items-center hidden md:flex">
+                             <div class="w-full ${style.height} bg-gray-200/50 border-2 border-dashed border-gray-300 rounded-t-xl shadow-lg p-4 flex flex-col justify-center items-center text-center relative">
+                                 <i class="ph ph-question text-5xl text-gray-400"></i><p class="text-gray-500 mt-2">Próximo Puesto</p>
+                             </div><div class="font-bold text-5xl text-gray-300 mt-2">${i + 1}</div></div>`;
+                }
+            }
+            rankingContainer.innerHTML = podiumHTML;
+        }
+
+        function displayStories(allStories) {
+            storiesContainer.innerHTML = ''; 
+            
+            // Filter by category first
+            let filteredByCategory = allStories.filter(story => story.category === currentCategory);
+
+            // Then filter by search term
+            let finalFilteredStories = filteredByCategory;
+            if (searchTerm) {
+                finalFilteredStories = filteredByCategory.filter(story =>
+                    story.title.toLowerCase().includes(searchTerm) ||
+                    story.author.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (finalFilteredStories.length === 0) {
+                 storiesContainer.innerHTML = `<p class="col-span-full text-center text-gray-500 text-lg">No se encontraron cuentos.</p>`;
+                 return;
+            }
+
+            finalFilteredStories.forEach(story => {
+                const userLiked = userVotes.has(story.id);
+                const likeButtonState = userLiked ? 'class="like-btn liked flex items-center gap-1.5 text-pink-500 cursor-not-allowed"' : 'class="like-btn flex items-center gap-1.5 text-gray-500 hover:text-pink-500 transition-colors"';
+                const likeIcon = userLiked ? 'ph-fill ph-heart' : 'ph ph-heart';
+                const shareText = encodeURIComponent(`¡Mira este increíble cuento "${story.title}" por ${story.author}!`);
+                const pageUrl = encodeURIComponent(window.location.href);
+
+                storiesContainer.innerHTML += `
+                    <div class="story-card bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                        <div class="block group relative cursor-pointer" data-story-id="${story.id}">
+                            <img src="${story.cover}" alt="Portada del cuento ${story.title}" class="w-full h-72 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x600/cccccc/ffffff?text=Imagen\\nno\\ndisponible';">
+                            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"><p class="text-white text-lg font-semibold">Leer cuento</p></div>
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="font-bold text-lg truncate">${story.title}</h3>
+                            <p class="text-sm text-gray-600 mb-2">Por: ${story.author}</p>
+                            <div class="flex items-center gap-2 mt-auto pt-2">
+                                <button data-story-id="${story.id}" ${userLiked ? 'disabled' : ''} ${likeButtonState}><i class="${likeIcon} text-2xl"></i><span class="like-count font-semibold text-base">${story.likes}</span></button>
+                                <div class="flex items-center gap-1 ml-auto">
+                                     <a href="https://api.whatsapp.com/send?text=${shareText}%20${pageUrl}" target="_blank" class="text-gray-400 hover:text-green-500 p-2"><i class="ph-bold ph-whatsapp-logo text-xl"></i></a>
+                                     <a href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}" target="_blank" class="text-gray-400 hover:text-blue-600 p-2"><i class="ph-bold ph-facebook-logo text-xl"></i></a>
+                                     <a href="https://www.instagram.com/" target="_blank" class="text-gray-400 hover:text-pink-600 p-2"><i class="ph-bold ph-instagram-logo text-xl"></i></a>
+                                </div></div></div></div>`;
+            });
+        }
+        
+        async function addLike(storyId) {
+            if (!currentUser || userVotes.has(storyId)) return;
+            const storyRef = doc(db, "stories", String(storyId));
+            const voteRef = doc(db, "users", currentUser.uid, "votes", String(storyId));
+            const batch = writeBatch(db);
+            batch.update(storyRef, { likes: increment(1) });
+            batch.set(voteRef, { votedAt: new Date() });
+            await batch.commit();
+            userVotes.add(storyId);
+        }
+
+        function displayCategoryButtons() {
+            for (const key in categories) {
+                const category = categories[key];
+                const button = document.createElement('button');
+                button.dataset.category = key;
+                button.className = 'category-btn flex items-center gap-2 bg-white text-gray-700 font-semibold py-2 px-4 rounded-full shadow-sm hover:bg-blue-100';
+                button.innerHTML = `<i class="ph-fill ph-${category.icon} text-xl"></i><span>${category.name}</span>`;
+                categoryButtonsContainer.appendChild(button);
+            }
+        }
+        function openModal(storyId) {
+            const story = storiesDetails.find(s => s.id === storyId);
+            if (story) { modalTitle.textContent = story.title; modalIframe.src = story.link; storyModal.classList.remove('hidden'); }
+        }
+        function closeModal() { modalIframe.src = ""; storyModal.classList.add('hidden'); }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    currentUser = user;
+                    const votesSnapshot = await getDocs(collection(db, "users", user.uid, "votes"));
+                    votesSnapshot.forEach(doc => userVotes.add(parseInt(doc.id)));
+                    await initializeStoriesInFirestore();
+                    setupRealtimeListeners();
+                } else {
+                    signInAnonymously(auth).catch(error => console.error("Error en inicio anónimo:", error));
+                }
+            });
+
+            displayCategoryButtons();
+            const firstButton = categoryButtonsContainer.querySelector(`[data-category="${currentCategory}"]`);
+            if(firstButton) firstButton.classList.add('active');
+
+            categoryButtonsContainer.addEventListener('click', (e) => {
+                const clickedButton = e.target.closest('.category-btn');
+                if (!clickedButton) return;
+                currentCategory = clickedButton.dataset.category;
+                document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+                clickedButton.classList.add('active');
+                searchInput.value = ''; // Clear search bar on category change
+                searchTerm = '';
+                displayAllUI(allStoriesMaster);
+            });
+            
+            searchInput.addEventListener('input', (e) => {
+                searchTerm = e.target.value.toLowerCase();
+                displayAllUI(allStoriesMaster);
+            });
+
+            storiesContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.story-card .group');
+                const likeButton = e.target.closest('.like-btn');
+                if (likeButton) {
+                    addLike(parseInt(likeButton.dataset.storyId));
+                } else if (card) {
+                    const storyId = parseInt(card.dataset.storyId);
+                    const story = storiesDetails.find(s => s.id === storyId);
+                    if (story) {
+                        if (story.link.includes('g.co/gemini')) {
+                            window.open(story.link, '_blank');
+                        } else {
+                            openModal(storyId);
+                        }
+                    }
+                }
+            });
+            
+            modalCloseBtn.addEventListener('click', closeModal);
+            storyModal.addEventListener('click', (e) => { if (e.target === storyModal) closeModal(); });
+        });
+    </script>
+</body>
+</html>
+
